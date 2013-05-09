@@ -18,7 +18,7 @@ class pe_caproxy::master(
     }
   }
 
-  # Template uses: @cert_name , @ca_server
+  # Template uses: @cert_name , @ca_master
   file { $puppetmaster_conf:
     ensure  => file,
     content => template("${module_name}/puppetmaster.conf.erb"),
@@ -38,7 +38,7 @@ class pe_caproxy::master(
   }
   augeas{'puppet.conf server' :
     context       => '/files//puppet.conf/agent',
-    changes       => "set server ${ca_server}",
+    changes       => "set server ${ca_master}",
   }
   if ! defined(Service[$puppet_service_name]) {
     service { $puppet_service_name:

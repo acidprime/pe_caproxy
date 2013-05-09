@@ -33,5 +33,5 @@ Listen 8140
         allow from all
     </Directory>
     <%# Add the mod_proxy redirect -%>
-    ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @ca_server %>:8140/$1
+    ProxyPassMatch ^/([^/]+/certificate.*)$ https://<%= @ca_master %>:8140/$1
 </VirtualHost>
