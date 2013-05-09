@@ -5,6 +5,19 @@ class pe_caproxy::master(
   $puppet_service_name = $pe_caproxy::params::puppet_service_name,
 ) inherits pe_caproxy::params {
 
+  if $::osfamily == 'Debian' {
+    exec { 'a2enmod proxy':
+      path    => '/opt/puppet/sbin',
+      creates => ['/etc/puppetlabs/httpd/mods-enabled/proxy.load',
+        '/etc/puppetlabs/httpd/mods-enabled/proxy.conf'],
+    }
+
+    exec { 'a2enmod http_proxy':
+      path    => '/opt/puppet/sbin',
+      creates => '/etc/puppetlabs/httpd/mods-enabled/proxy_http.load',
+    }
+  }
+
   # Template uses: @cert_name , @ca_server
   file { $puppetmaster_conf:
     ensure  => file,
@@ -12,7 +25,6 @@ class pe_caproxy::master(
     require => Augeas['puppet.conf ca_server'],
     notify  => Service[$puppet_service_name],
   }
-
 
   augeas{'puppet.conf ca' :
     context       => '/files//puppet.conf/master',
