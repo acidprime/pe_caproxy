@@ -12,7 +12,7 @@ class pe_caproxy::master(
         '/etc/puppetlabs/httpd/mods-enabled/proxy.conf'],
     }
 
-    exec { 'a2enmod http_proxy':
+    exec { 'a2enmod proxy_http':
       path    => '/opt/puppet/sbin',
       creates => '/etc/puppetlabs/httpd/mods-enabled/proxy_http.load',
     }
