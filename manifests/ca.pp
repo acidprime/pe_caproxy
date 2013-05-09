@@ -1,15 +1,12 @@
 class pe_caproxy::ca (
-  $masters = $::non_ca_servers,
-  $certserver = $::ca_server,
-) {
+  $non_ca_masters = $pe_caproxy::params::non_ca_masters,
+  $ca_master = $pe_caproxy::params::ca_master,
+) inherits pe_caproxy::params {
   # Since this class applies to the ca server,
   # if there is no $::ca_server, use the clientcert fact 
-  if ! defined($certserver) {
-    $certserver = $::clientcert
-  }
-  $masters_normalized = regsubst($masters,'\s', '', G)
+  $masters_normalized = regsubst($non_ca_masters,'\s', '', G)
   $masters_list = split($masters_normalized, ',')
-  $fact_save_allowed = stradd($masters_list, $certserver)
+  $fact_save_allowed = stradd($masters_list, $ca_master)
 
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
