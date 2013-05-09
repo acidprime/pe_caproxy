@@ -1,4 +1,9 @@
 class pe_caproxy::ca {
+
+  $masters_normalized = regsubst($::non_ca_servers,'\s', '', G)
+  $masters_list = split($masters_normalized, ',')
+  $fact_save_allowed = stradd($masters_list, $::clientcert)
+
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
   }
@@ -13,10 +18,10 @@ class pe_caproxy::ca {
     order      => 085,
   }
   Auth_conf::Acl <| title == 'save-/facts'|> {
-    path       => '~ ^/facts/([^/]+)$',
+    path       => '/facts',
     auth       => 'yes',
-    acl_method => ['save'],
-    allow      => '$1',
+    acl_method => 'save',
+    allow      => $fact_save_allowed,
     order      => 095,
   }
   exec { 'node:parameters':
