@@ -16,7 +16,7 @@ class pe_caproxy::ca {
     path       => '/facts',
     auth       => 'yes',
     acl_method => 'save',
-    allow      => $::clientcert,$::non_ca_servers,
+    allow      => [$::clientcert, $::non_ca_servers],
     order      => 095,
   }
   exec { 'node:parameters':
