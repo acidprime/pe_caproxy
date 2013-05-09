@@ -9,3 +9,4 @@ project_page 'UNKNOWN'
 
 ## Add dependencies, if any:
 # dependency 'username/name', '>= 1.2.0'
+# If stdlib > 3.2.0 you don't need the pick.rb in lib/puppet/parser/functions
