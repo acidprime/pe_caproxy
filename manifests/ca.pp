@@ -12,13 +12,13 @@ class pe_caproxy::ca {
     allow      => '*',
     order      => 085,
   }
-  Auth_conf::Acl <| title == 'save-/facts'|> {
-    path       => '~ ^/facts/([^/]+)$',
+  auth_conf::acl { '/facts':
     auth       => 'yes',
-    acl_method => ['save'],
-    allow      => '$1',
+    acl_method => 'save',
+    allow      => $::non_ca_servers,
     order      => 095,
   }
+
   exec { 'node:parameters':
     path        => '/opt/puppet/bin:/bin',
     cwd         => '/opt/puppet/share/puppet-dashboard',
