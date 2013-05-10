@@ -36,7 +36,7 @@ class pe_caproxy::master(
   # the agent -t on the local master's agent
   augeas{'puppet.conf ca_server' :
     context       => '/files//puppet.conf/agent',
-    changes       => "set ca_server ${ca_server}",
+    changes       => "set ca_server ${ca_master}",
   }
   augeas{'puppet.conf server' :
     context       => '/files//puppet.conf/agent',
