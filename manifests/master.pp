@@ -7,14 +7,16 @@ class pe_caproxy::master(
 
   if $::osfamily == 'Debian' {
     exec { 'a2enmod proxy':
-      path    => '/opt/puppet/sbin',
+      path    => '/usr/bin:/opt/puppet/sbin',
       creates => ['/etc/puppetlabs/httpd/mods-enabled/proxy.load',
         '/etc/puppetlabs/httpd/mods-enabled/proxy.conf'],
+      notify  => Service[$puppet_service_name],
     }
 
     exec { 'a2enmod proxy_http':
-      path    => '/opt/puppet/sbin',
+      path    => '/usr/bin:/opt/puppet/sbin',
       creates => '/etc/puppetlabs/httpd/mods-enabled/proxy_http.load',
+      notify  => Service[$puppet_service_name],
     }
   }
 
