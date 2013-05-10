@@ -6,4 +6,6 @@ class pe_caproxy::params
     $non_ca_masters      = $::non_ca_servers
     $puppet_service_name = 'pe-httpd'
     $manage_puppet_conf  = true
+    $servername          = split($certname, '[.]')
+    $stomp_server_value  = $servername[0] 
 }
