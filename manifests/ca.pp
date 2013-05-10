@@ -8,7 +8,8 @@ class pe_caproxy::ca (
   $fact_save_allowed  = stradd($masters_list, $ca_master)
 
   validate_bool($manage_puppet_conf)
-  
+  $params = consoleparams($::clientcert, $settings::external_nodes)
+
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
   }
@@ -39,11 +40,13 @@ class pe_caproxy::ca (
     order      => 095,
     require    => Augeas['puppet.conf ca_server'],
   }
-  exec { 'node:parameters':
-    path        => '/opt/puppet/bin:/bin',
-    cwd         => '/opt/puppet/share/puppet-dashboard',
-    environment => 'RAILS_ENV=production',
-    command     => "rake node:parameters name=${::clientcert} parameters=custom_auth_conf=false",
-    #  refreshonly => true,
+  if $params['custom_auth_conf'] != "false" {
+    exec { 'node:parameters':
+      path        => '/opt/puppet/bin:/bin',
+      cwd         => '/opt/puppet/share/puppet-dashboard',
+      environment => 'RAILS_ENV=production',
+      command     => "rake node:parameters name=${::clientcert} parameters=custom_auth_conf=false",
+      #  refreshonly => true,
+    }
   }
 }
