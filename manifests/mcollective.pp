@@ -1,4 +1,4 @@
-class pe_caproxy::mcolletive (
+class pe_caproxy::mcollective (
   $stomp_server_value = $pe_caproxy::params::stomp_server_value
 ) inherits pe_caproxy::params {
   $params = consoleparams($::clientcert, $settings::external_nodes)
