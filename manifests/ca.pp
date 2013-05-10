@@ -13,6 +13,13 @@ class pe_caproxy::ca (
     context       => '/files//puppet.conf/main',
     changes       => "set ca_server ${::clientcert}",
   }
+  # This emulates what request_manager would do:
+  auth_conf::acl { '/certificate_status':
+    auth       => 'yes',
+    acl_method => ['find','search', 'save', 'destroy'],
+    allow      => 'pe-internal-dashboard',
+    order      => 085,
+  }
   auth_conf::acl { '/certificate_revocation_list':
     auth       => 'any',
     acl_method => ['find'],
