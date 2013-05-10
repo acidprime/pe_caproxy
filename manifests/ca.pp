@@ -40,13 +40,12 @@ class pe_caproxy::ca (
     order      => 095,
     require    => Augeas['puppet.conf ca_server'],
   }
-  if $params['custom_auth_conf'] != "false" {
+  if !has_key($params, 'custom_auth_conf') {
     exec { 'node:parameters':
       path        => '/opt/puppet/bin:/bin',
       cwd         => '/opt/puppet/share/puppet-dashboard',
       environment => 'RAILS_ENV=production',
       command     => "rake node:parameters name=${::clientcert} parameters=custom_auth_conf=false",
-      #  refreshonly => true,
     }
   }
 }
