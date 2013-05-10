@@ -17,12 +17,12 @@ Example:
 
   require 'yaml'
 
-  name = arguments[0]
+  node = arguments[0]
   command = arguments[1]
 
   result = `#{command} #{node} 2>/dev/null`
 
-  yamldata = YAML::load(result)
+  yamldata = YAML.load(result)
   return yamldata['parameters']
   end
 end
