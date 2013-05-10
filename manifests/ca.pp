@@ -10,8 +10,6 @@ class pe_caproxy::ca (
   validate_bool($manage_puppet_conf)
   $params = consoleparams($::clientcert, $settings::external_nodes)
 
-  class { 'pe_caproxy::mcollective': }
-
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
   }
