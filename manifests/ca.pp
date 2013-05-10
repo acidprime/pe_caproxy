@@ -10,8 +10,8 @@ class pe_caproxy::ca (
     master_certname => $::fact_puppetmaster_certname,
   }
   augeas {'puppet.conf ca_server' :
-    context       => '/files//puppet.conf/main',
-    changes       => "set ca_server ${::clientcert}",
+    context => '/files//puppet.conf/main',
+    changes => "set ca_server ${::clientcert}",
   }
   # This emulates what request_manager would do:
   auth_conf::acl { '/certificate_status':
@@ -32,6 +32,7 @@ class pe_caproxy::ca (
     acl_method => 'save',
     allow      => $fact_save_allowed,
     order      => 095,
+    require    => Augeas['puppet.conf ca_server'],
   }
   exec { 'node:parameters':
     path        => '/opt/puppet/bin:/bin',
