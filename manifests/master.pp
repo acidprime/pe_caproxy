@@ -3,10 +3,10 @@ class pe_caproxy::master(
   $cert_name           = $pe_caproxy::params::certname,
   $puppetmaster_conf   = $pe_caproxy::params::puppetmaster_conf,
   $puppet_service_name = $pe_caproxy::params::puppet_service_name,
-  $managepuppetconf    = $pe_caproxy::params::managepuppetconf,
+  $manage_puppet_conf  = $pe_caproxy::params::manage_puppet_conf,
 ) inherits pe_caproxy::params {
 
-  validate_bool($managepuppetconf)
+  validate_bool($manage_puppet_conf)
 
   if $::osfamily == 'Debian' {
     exec { 'a2enmod proxy':
@@ -23,7 +23,7 @@ class pe_caproxy::master(
     }
   }
 
-  if $managepuppetconf {
+  if $manage_puppet_conf {
     # Template uses: @cert_name , @ca_master
     file { $puppetmaster_conf:
       ensure  => file,

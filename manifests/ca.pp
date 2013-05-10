@@ -1,18 +1,18 @@
 class pe_caproxy::ca (
-  $non_ca_masters   = $pe_caproxy::params::non_ca_masters,
-  $ca_master        = $pe_caproxy::params::ca_master,
-  $managepuppetconf = $pe_caproxy::params::managepuppetconf,
+  $non_ca_masters     = $pe_caproxy::params::non_ca_masters,
+  $ca_master          = $pe_caproxy::params::ca_master,
+  $manage_puppet_conf = $pe_caproxy::params::manage_puppet_conf,
 ) inherits pe_caproxy::params {
   $masters_normalized = regsubst($non_ca_masters,'\s', '', G)
   $masters_list       = split($masters_normalized, ',')
   $fact_save_allowed  = stradd($masters_list, $ca_master)
 
-  validate_bool($managepuppetconf)
+  validate_bool($manage_puppet_conf)
   
   class { 'auth_conf::defaults':
     master_certname => $::fact_puppetmaster_certname,
   }
-  if $managepuppetconf {
+  if $manage_puppet_conf {
     augeas {'puppet.conf ca_server' :
       context => '/files//puppet.conf/main',
       changes => "set ca_server ${::clientcert}",

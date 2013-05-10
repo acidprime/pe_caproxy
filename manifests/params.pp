@@ -5,5 +5,5 @@ class pe_caproxy::params
     $ca_master           = pick($::ca_server,$settings::ca_server)
     $non_ca_masters      = $::non_ca_servers
     $puppet_service_name = 'pe-httpd'
-    $managepuppetconf    = true
+    $manage_puppet_conf  = true
 }
